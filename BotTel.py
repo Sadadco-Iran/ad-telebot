@@ -1501,3 +1501,182 @@ def paym5(message):
                          reply_markup=markup2)
     elif message.text == "لغو آگهی":
         bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
+
+
+def witchbtc(message):
+    global btc
+    btc = message.text
+    msg = bot.send_message(message.chat.id, text="""
+        چه تعداد ارز برای معامله دارید؟
+
+        فقط عدد وارد کنید.
+        مثال : 80
+
+        """, reply_markup=main)
+
+    bot.register_next_step_handler(msg, witchbtc2)
+
+
+def witchbtc2(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global btccount
+        btccount = message.text
+        msg = bot.send_message(message.chat.id, text="""
+        روش دریافت یا ارسال هزینه ی ارز را مشخص نمایید:
+        """, reply_markup=paymethod)
+        bot.register_next_step_handler(msg, paymbtc)
+
+
+def paymbtc(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "سایر":
+        otherbtc(message)
+    else:
+        global pay
+        pay = message.text
+        global e
+        e = bot.send_message(message.chat.id, text=f"""
+        دسته بندی : {daste}
+نحوه پرداخت یا دریافت هزینه ی ارز دیجیتال :
+روش یک : {pay} 
+
+         """)
+        msg = bot.send_message(message.chat.id, text="روش دوم را ارسال کنید:", reply_markup=paymethodtwo)
+        bot.register_next_step_handler(msg, paymbtc2)
+
+
+def paymbtc2(message):
+    global pay2
+    pay2 = message.text
+    bot.delete_message(chat_id=message.chat.id, message_id=e.message_id)
+    global e2
+    e2 = bot.send_message(message.chat.id, text=f"""
+            دسته بندی : {daste}
+نحوه پرداخت یا دریافت هزینه ی ارز دیجیتال :
+
+روش یک : {pay} 
+روش دو :{pay2}
+    """)
+    msg = bot.send_message(message.chat.id, text="روش سوم را ارسال کنید:", reply_markup=paymethodtwo)
+    bot.register_next_step_handler(msg, paymbtc3)
+
+
+def paymbtc3(message):
+    global pay3
+    pay3 = message.text
+    bot.delete_message(chat_id=message.chat.id, message_id=e2.message_id)
+    bot.send_message(message.chat.id, text=f"""
+                دسته بندی : {daste}
+    نحوه پرداخت یا دریافت هزینه ی ارز دیجیتال:
+
+    روش یک : {pay} 
+    روش دو :{pay2}
+    روش سه : {pay3}
+        """)
+    msg = bot.send_message(message.chat.id, text="توضیحات مربوط به اگهی خود را ارسال نمایید :", reply_markup=tozihmark)
+    bot.register_next_step_handler(msg, paymbtc4)
+
+
+def paymbtc4(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    else:
+        global tozih
+        tozih = message.text
+        UID = message.from_user.username
+        bot.send_message(message.chat.id, text="""
+        در حال ساخت آگهی شما . . .🪧📝
+
+لطفا کمی صبور باشید🙏🏻
+
+                """)
+
+        text = f"""
+           🌀✅ {daste} ✅🌀
+
+
+واحد ارز : {btc}
+
+
+🔢 تعداد ارز دیجیتال موجود برای معامله:{btccount} 
+
+
+🔁 روش های دریافت یا پرداخت :
+روش اول :{pay}
+روش دوم :{pay2} 
+روش سوم : {pay3}
+
+توضیحات آگهی:
+{tozih}
+
+
+
+👤 تماس با آگهی دهنده
+ @{UID}
+
+
+⚠️صحت آگهی های خرید و فروش روبل صرفاً بر عهده آگهی دهنده است و Rusbazar هیچ گونه مسئولیتی در قبال کلاهبرداری های احتمالی قبول نمی کند.
+ لطفا با هوشیاری و احتیاط کامل اقدام به خرید ارز نمایید.
+
+       📎 @Rusbazar_bot  
+       📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus        
+           """
+        bot.send_message(message.chat.id, text=text, reply_markup=accorejmarkup)
+        msg = bot.send_message(message.chat.id, text="آیا آگهی خود را تایید میکنید؟")
+        bot.register_next_step_handler(msg, btcfinal)
+
+
+def btcfinal(message):
+    UID = message.from_user.username
+
+    text = f"""
+               🌀✅ {daste} ✅🌀
+
+    🔢 تعداد ارز دیجیتال موجود برای معامله:{btc} 
+
+
+    🔁 روش های دریافت یا پرداخت :
+    روش اول :{pay}
+    روش دوم :{pay2} 
+    روش سوم : {pay3}
+
+
+    👤 تماس با آگهی دهنده
+     @{UID}
+
+    توضیحات آگهی:
+    {tozih}
+
+
+
+    ⚠️صحت آگهی های خرید و فروش روبل صرفاً بر عهده آگهی دهنده است و Rusbazar هیچ گونه مسئولیتی در قبال کلاهبرداری های احتمالی قبول نمی کند. لطفا با هوشیاری و احتیاط کامل اقدام به خرید ارز نمایید.
+
+           📎 @Rusbazar_bot  
+           📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus        
+               """
+    if message.text == "تایید آگهی":
+        bot.send_message(chat_id=963475140, text=text)
+        bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
+                         reply_markup=markup2)
+    elif message.text == "لغو آگهی":
+        bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
+
+
+@bot.message_handler(func=lambda m: m.text == "قوانین 📌")
+def rules(message):
+    text = """
+کانال های ما :
+@rednews2022
+@havashi_russ_2022 
+@niazmndiha_2024_rus
+
+------------------------------------------
+
+متن قوانین تنظیم نشده.
+    """
+    bot.send_message(message.chat.id, text=text)
