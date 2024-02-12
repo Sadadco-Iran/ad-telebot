@@ -1867,3 +1867,17 @@ def confirm(message):
         {tct}
         """)
         bot.send_message(chat_id=message.chat.id, text="تیکت شما ثبت شد.", reply_markup=markup2)
+
+
+
+def cncltct(message):
+    bot.send_message(message.chat.id, text="به منوی اصلی بازگشتید.", reply_markup=markup2)
+
+
+
+@bot.message_handler(func=lambda m:m.text == "کانال ها 📣")
+def channells(message):
+    bot.send_message(chat_id=message.chat.id, text="""
+   کانال های فعال ما:
+
+    """ , reply_markup=markchnnl)
