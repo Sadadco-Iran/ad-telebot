@@ -1256,3 +1256,91 @@ def itir7img2(message):
         bot.send_photo(message.chat.id, caption=captioncol4, photo=photocol4)
         msg = bot.send_message(message.chat.id, text="آیا آگهی خود را تایید میکنید؟", reply_markup=accorejmarkup)
         bot.register_next_step_handler(msg, conimgcol4two)
+
+
+
+
+def conimgcol4two(message):
+    if message.text == "تایید آگهی":
+        bot.send_photo(chat_id=963475140 , caption=captioncol4 , photo=photocol4)
+        bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",reply_markup=markup2)
+    elif message.text == "لغو آگهی":
+        bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
+
+def itir7noimg(message):
+    msg = bot.send_message(message.chat.id , text="لطفا توضیحات آگهی را مجددا ارسال نمایید:" , reply_markup=tozihmark)
+    bot.register_next_step_handler(msg , itir7)
+
+def itir7(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global tozihitir
+        UID = message.from_user.username
+        tozihitir = message.text
+        bot.send_message(message.chat.id, text="""
+    در حال ساخت آگهی شما . . .🪧📝
+
+لطفا کمی صبور باشید🙏🏻
+
+    """)
+        time.sleep(1)
+        bot.send_message(message.chat.id, text=f"""
+🌀✅ {daste} ✅🌀
+
+🌎 کشور مبدا و مقصد:{itirmom} 
+
+🗓 تاریخ پرواز:{airdateitir}
+
+📍 شهر مبدا:{itirmabda}
+
+📍 شهر مقصد:{itirmaghsad}
+
+⛓ وزن بار به کیلوگرم:{kgitir} 
+
+💰 قیمت هر کیلو به روبل:
+{pricekgitir} 
+
+👤 تماس با آگهی دهنده
+@{UID}
+
+📎 @Rusbazar_bot  
+📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus
+    """)
+        msg=bot.send_message(message.chat.id , text="آیا آگهی خود را تایید میکنید؟" , reply_markup=accorejmarkup)
+        bot.register_next_step_handler(msg , finalitir)
+
+
+def finalitir(message):
+    global conitir
+    conitir = message.text
+    UID = message.from_user.username
+    text = f"""
+    🌀✅ {daste} ✅🌀
+
+🌎 کشور مبدا و مقصد:{itirmom} 
+
+🗓 تاریخ پرواز: {airdateitir}
+
+📍 شهر مبدا:{itirmabda}
+
+📍 شهر مقصد: {itirmaghsad}
+
+⛓ وزن بار به کیلوگرم:{kgitir} 
+
+💰 قیمت هر کیلو به روبل:
+{pricekgitir} 
+
+👤 تماس با آگهی دهنده
+@{UID}
+
+📎 @Rusbazar_bot  
+📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus
+    """
+    if message.text == "تایید آگهی":
+        bot.send_message(chat_id=963475140, text=text)
+        bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",reply_markup=markup2)
+    elif message.text == "لغو آگهی":
+        bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
