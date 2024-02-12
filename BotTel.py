@@ -1680,3 +1680,153 @@ def rules(message):
 متن قوانین تنظیم نشده.
     """
     bot.send_message(message.chat.id, text=text)
+
+
+def otherbtc(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    msg = bot.send_message(message.chat.id, text="یک نحوه برای معامله را به دلخواه ارسال کنید",
+                           reply_markup=marktavafogh)
+    bot.register_next_step_handler(msg, otherbtc2)
+
+
+def otherbtc2(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    else:
+        global pay
+        global msgpay
+        pay = message.text
+        msgpay = bot.send_message(message.chat.id, text=f"""
+        روش اول انتخاب شد :
+        {pay}
+
+        """)
+        msg = bot.send_message(message.chat.id, text="حال میتوانید روش دوم را اضافه کنید:", reply_markup=marktavafogh)
+        bot.register_next_step_handler(msg, otherbtc3)
+
+
+def otherbtc3(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    else:
+        global pay2
+        pay2 = message.text
+        bot.send_message(message.chat.id, text=f"""
+        روش اول انتخاب شد :
+        {pay}
+        روش دوم انتخاب شد : 
+        {pay2}
+
+        """)
+        msg = bot.send_message(message.chat.id, text="حال میتوانید روش سوم را اضافه کنید:", reply_markup=marktavafogh)
+        bot.register_next_step_handler(msg, otherbtc4)
+
+
+def otherbtc4(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    else:
+        global pay3
+        pay3 = message.text
+        bot.send_message(message.chat.id, text=f"""
+        روش اول انتخاب شد :
+        {pay}
+        روش دوم انتخاب شد : 
+        {pay2}
+        روش سوم انتخاب شد :
+        {pay3}
+
+        """)
+        msg = bot.send_message(message.chat.id, text="حال توضیحات مربوط به آگهی خود را بفرستید:",
+                               reply_markup=tozihmark)
+        bot.register_next_step_handler(msg, otherbtc5)
+
+
+def otherbtc5(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    else:
+        global tozih
+        tozih = message.text
+        UID = message.from_user.username
+        bot.send_message(message.chat.id, text="""
+        در حال ساخت آگهی شما . . .🪧📝
+
+لطفا کمی صبور باشید🙏🏻
+
+                """)
+
+        text = f"""
+    🌀✅ {daste} ✅🌀
+
+    واحد ارز : {btc}
+
+
+
+🔢 تعداد ارز دیجیتال موجود برای معامله:{btccount} 
+
+
+🔁 روش های دریافت یا پرداخت :
+روش اول :{pay}
+روش دوم :{pay2} 
+روش سوم : {pay3}
+
+توضیحات آگهی:{tozih}
+
+
+
+
+
+👤 تماس با آگهی دهنده
+@{UID}
+
+
+
+⚠️صحت آگهی های خرید و فروش روبل صرفاً بر عهده آگهی دهنده است و Rusbazar هیچ گونه مسئولیتی در قبال کلاهبرداری های احتمالی قبول نمی کند. لطفا با هوشیاری و احتیاط کامل اقدام به خرید ارز نمایید.
+
+📎 @Rusbazar_bot  
+📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus        
+    """
+        time.sleep(1)
+        bot.send_message(message.chat.id, text=text, reply_markup=accorejmarkup)
+        msg = bot.send_message(message.chat.id, text="آیا آگهی خود را تایید میکنید؟")
+        bot.register_next_step_handler(msg, otherbtc6)
+
+
+def otherbtc6(message):
+    UID = message.from_user.username
+    text = f"""
+    🌀✅ {daste} ✅🌀
+
+🔢 تعداد ارز دیجیتال موجود برای معامله:{btc} 
+
+
+🔁 روش های دریافت یا پرداخت :
+روش اول :{pay}
+روش دوم :{pay2} 
+روش سوم : {pay3}
+
+
+👤 تماس با آگهی دهنده
+@{UID}
+
+توضیحات آگهی:{tozih}
+
+
+
+
+
+
+
+⚠️صحت آگهی های خرید و فروش روبل صرفاً بر عهده آگهی دهنده است و Rusbazar هیچ گونه مسئولیتی در قبال کلاهبرداری های احتمالی قبول نمی کند. لطفا با هوشیاری و احتیاط کامل اقدام به خرید ارز نمایید.
+
+📎 @Rusbazar_bot  
+📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus        
+    """
+    if message.text == "تایید آگهی":
+        bot.send_message(chat_id=963475140, text=text)
+        bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
+                         reply_markup=markup2)
+    elif message.text == "لغو آگهی":
+        bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
