@@ -1830,3 +1830,40 @@ def otherbtc6(message):
                          reply_markup=markup2)
     elif message.text == "لغو آگهی":
         bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
+
+
+@bot.message_handler(func=lambda m:True)
+def support(message):
+    if message.text == "پشتیبانی ⚠️":
+        msg = bot.send_message(chat_id=message.chat.id, text="""
+        ✅  کاربر عزیز برای ارسال تیکت به پشتیبانی لطفا پیام خود را بصورت متنی ارسال نمایید
+        .
+        🔹 توجه : این تیکت برای توسعه دهنده ربات و مدیر ربات ارسال میشود
+
+        شما میتوانید مشکلات ربات یا هر پیشنهاد دیگری را از این طریق برای ما ارسال کنید
+
+                    """, reply_markup=buttoncnmarkup)
+        bot.register_next_step_handler(msg, confirm)
+
+
+def confirm(message):
+    global tct
+    UID = message.from_user.username
+    UFN = message.from_user.first_name
+    tct = message.text
+    if tct == "لغو ❌":
+        cncltct(message)
+    else:
+        bot.send_message(chat_id=963475140, text=f"""
+    ارسالی از تیکت
+نام ارسال کننده :
+{UFN}
+آیدی ارسال کننده :
+@{UID}
+
+
+متن تیکت :
+
+        {tct}
+        """)
+        bot.send_message(chat_id=message.chat.id, text="تیکت شما ثبت شد.", reply_markup=markup2)
