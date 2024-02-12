@@ -1344,3 +1344,160 @@ def finalitir(message):
         bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",reply_markup=markup2)
     elif message.text == "لغو آگهی":
         bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
+
+
+def euro1(message):
+    global eurocount
+    eurocount = message.text
+    msg = bot.send_message(message.chat.id, text="""
+
+هر روبل را چند تومان معامله میکنید؟
+
+فقط عدد وارد کنید مثلا : 60720
+
+یا با ارسال کلمه "توافقی" از کیبورد اطلاعات را ثبت کنید
+    """, reply_markup=main2)
+    bot.register_next_step_handler(msg, euro2)
+
+
+def euro2(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global toomancount
+        toomancount = message.text
+        bot.send_message(message.chat.id, text=f"💶 قیمت : {toomancount}")
+        msg = bot.send_message(message.chat.id, text="""
+نحوه دریافت یا پرداخت روبل را مشخص نمایید : 
+
+میتوانید حداکثر سه مورد را انتخاب نمایید   
+        """, reply_markup=paymethod)
+        bot.register_next_step_handler(msg, euro3)
+
+
+def euro3(message):
+    global pay
+    pay = message.text
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "سایر":
+        other(message)
+    else:
+        global e
+        e = bot.send_message(message.chat.id, text=f"""
+        دسته بندی : {daste}
+نحوه پرداخت یا دریافت روبل :
+روش یک : {pay} 
+
+         """)
+        msg = bot.send_message(message.chat.id, text="روش دوم را ارسال کنید:", reply_markup=paymethodtwo)
+        bot.register_next_step_handler(msg, paym1)
+
+
+def paym1(message):
+    global pay2
+    pay2 = message.text
+    bot.delete_message(chat_id=message.chat.id, message_id=e.message_id)
+    global e2
+    e2 = bot.send_message(message.chat.id, text=f"""
+            دسته بندی : {daste}
+نحوه پرداخت یا دریافت روبل :
+
+روش یک : {pay} 
+روش دو :{pay2}
+    """)
+    msg = bot.send_message(message.chat.id, text="روش سوم را ارسال کنید:", reply_markup=paymethodtwo)
+    bot.register_next_step_handler(msg, paym3)
+
+
+def paym3(message):
+    global pay3
+    pay3 = message.text
+    bot.delete_message(chat_id=message.chat.id, message_id=e2.message_id)
+    bot.send_message(message.chat.id, text=f"""
+                دسته بندی : {daste}
+    نحوه پرداخت یا دریافت روبل :
+
+    روش یک : {pay} 
+    روش دو :{pay2}
+    روش سه : {pay3}
+        """)
+    msg = bot.send_message(message.chat.id, text="توضیحات مربوط به اگهی خود را ارسال نمایید :", reply_markup=tozihmark)
+    bot.register_next_step_handler(msg, paym4)
+
+
+def paym4(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    else:
+        global tozih
+        tozih = message.text
+        UID = message.from_user.username
+        bot.send_message(message.chat.id, text="""
+        در حال ساخت آگهی شما . . .🪧📝
+
+لطفا کمی صبور باشید🙏🏻
+
+                """)
+
+        text = f"""
+🌀✅ {daste} ✅🌀
+
+🔢 مبلغ روبل موجود برای معامله:{eurocount} 
+
+💰 قیمت هر روبل به تومان:{toomancount} 
+
+🔁 روش های دریافت یا پرداخت :
+
+روش اول :{pay}
+روش دوم :{pay2} 
+روش سوم : {pay3}
+
+توضیحات آگهی : 
+{tozih}
+
+👤 تماس با آگهی دهنده
+@{UID}       
+⚠️صحت آگهی های خرید و فروش روبل صرفاً بر عهده آگهی دهنده است و Rusbazar هیچ گونه مسئولیتی در قبال کلاهبرداری های احتمالی قبول نمی کند. لطفا با هوشیاری و احتیاط کامل اقدام به خرید ارز نمایید.
+
+       📎 @Rusbazar_bot  
+       📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus        
+           """
+        time.sleep(1)
+        bot.send_message(message.chat.id, text=text, reply_markup=accorejmarkup)
+        msg = bot.send_message(message.chat.id, text="آیا آگهی خود را تایید میکنید؟")
+        bot.register_next_step_handler(msg, paym5)
+
+
+def paym5(message):
+    UID = message.from_user.username
+    text = f"""
+    🌀✅ {daste} ✅🌀
+
+🔢 مبلغ روبل موجود برای معامله:{eurocount} 
+
+💰 قیمت هر روبل به تومان:{toomancount} 
+
+🔁 روش های دریافت یا پرداخت :
+روش اول :{pay}
+روش دوم :{pay2} 
+روش سوم : {pay3}
+
+توضیحات آگهی : 
+{tozih}
+
+    👤 تماس با آگهی دهنده
+    @{UID}       
+    ⚠️صحت آگهی های خرید و فروش روبل صرفاً بر عهده آگهی دهنده است و Rusbazar هیچ گونه مسئولیتی در قبال کلاهبرداری های احتمالی قبول نمی کند. لطفا با هوشیاری و احتیاط کامل اقدام به خرید ارز نمایید.
+
+           📎 @Rusbazar_bot  
+           📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus        
+               """
+    if message.text == "تایید آگهی":
+        bot.send_message(chat_id=963475140, text=text)
+        bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
+                         reply_markup=markup2)
+    elif message.text == "لغو آگهی":
+        bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
