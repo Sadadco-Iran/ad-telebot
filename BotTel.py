@@ -323,5 +323,364 @@ def joinm(call):
         """, reply_markup=markup2)
 
 
+@bot.message_handler(content_types=['photo'])
+def getimgcol1(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "سایر":
+        othercityrent(message)
+    elif message.text == "بدون عکس":
+        msg = bot.send_message(message.chat.id, text="لطفا شهر خود را انتخاب کنید:", reply_markup=markupcity)
+        bot.register_next_step_handler(msg, getcityrent)
+    else:
+        global imgcol1
+        imgcol1 = message.photo[-1].file_id
+        msg = bot.send_message(message.chat.id, text="حال شهر خود را انتخاب کنید:", reply_markup=markupcity)
+        bot.register_next_step_handler(msg, getcityrent1)
 
+
+def getcityrent1(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "سایر":
+        othercityrent(message)
+    else:
+        global cityrent
+        cityrent = message.text
+        bot.send_message(message.chat.id, text=f"شهر : {cityrent}")
+        msg = bot.send_message(message.chat.id, text="محدوده مورد نظر را وارد نمایید :", reply_markup=main)
+        bot.register_next_step_handler(msg, getmahdooderent1)
+
+
+def getmahdooderent1(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global mahdoode
+        mahdoode = message.text
+        msg = bot.send_message(message.chat.id, text="""
+
+    تاریخ شروع مورد نظرتان را به میلادی وارد نمایید : 
+
+فرمت : dd/mm/yyyy مثال : 05/02/2024
+        """)
+        bot.register_next_step_handler(msg, getstartdate1)
+
+
+def getstartdate1(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global startdate
+        startdate = message.text
+        msg = bot.send_message(message.chat.id, text="""
+    تاریخ پایان مورد نظرتان را به میلادی وارد نمایید : 
+
+فرمت : dd/mm/yyyy مثال : 05/02/2024
+
+پی نوشت : یا میتوانید با ارسال کلمه "توافقی" تاریخ پایان را توافقی ثبت کنید
+
+    """, reply_markup=main2)
+        bot.register_next_step_handler(msg, enddate1)
+
+
+def enddate1(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global enddatee
+        enddatee = message.text
+        msg = bot.send_message(message.chat.id, text="وضعیت قرارداد را مشخص نمایید :", reply_markup=markupgharardad)
+        bot.register_next_step_handler(msg, gharardadrent1)
+
+
+def gharardadrent1(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global vaziat
+        vaziat = message.text
+        bot.send_message(message.chat.id, text=f"وضعیت قرارداد بصورت : {vaziat}")
+        msg = bot.send_message(message.chat.id, text="""
+    مایلید قیمت را به چه صورت اعلام کنید؟
+    """, reply_markup=markupprice)
+        bot.register_next_step_handler(msg, europrice1)
+
+
+def europrice1(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global eprice
+        eprice = message.text
+        msg = bot.send_message(message.chat.id, text=f"""
+         بصورت : {eprice}
+
+         حاضرید چند روبل پرداخت کنید؟
+         پی نوشت : فقط عدد وارد کنید یا با ارسال کلمه "توافقی" اطلاعات را ثبت کنید
+""", reply_markup=marktavafogh)
+        bot.register_next_step_handler(msg, gheymat1)
+
+
+def gheymat1(message):
+    global gheymateu
+    gheymateu = message.text
+    if message.text == "توافقی":
+        bot.send_message(message.chat.id, text=f"""
+        قیمت بصورت : {gheymateu}
+        """)
+        msg = bot.send_message(message.chat.id, text="توضیحات آگهی خود را وارد کنید:", reply_markup=tozihmark)
+    elif message.text == "لغو ❌":
+        cncltct(message)
+    else:
+        bot.send_message(message.chat.id, text=f"""
+        قیمت بصورت : {eprice}
+        """)
+        msg = bot.send_message(message.chat.id, text="توضیحات آگهی خود را وارد کنید:", reply_markup=tozihmark)
+    bot.register_next_step_handler(msg, toozihatimg)
+
+
+def toozihatimg(message):
+    global tozih
+    UID = message.from_user.username
+    tozih = message.text
+    global captioncol1
+    captioncol1 = f"""
+🌀✅ {daste} ✅🌀
+
+📍 مربوط به شهر:{cityrent} 
+
+🔎 محدوده:
+{mahdoode} 
+
+🗓 تاریخ شروع:
+{startdate}     
+
+🗓  تاریخ پایان :
+{enddatee}
+
+📑 نوع قرارداد:{vaziat} 
+
+💰 قیمت به روبل:{eprice} {gheymateu} 
+
+👤 تماس با آگهی دهنده:
+@{UID}
+
+توضیحات آگهی :{tozih}
+
+📎 @Rusbazar_bot  
+📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus
+
+        """
+    bot.send_photo(message.chat.id, photo=imgcol1, caption=captioncol1)
+    msg = bot.send_message(message.chat.id, text="آیا آگهی خود را تایید میکنید؟", reply_markup=accorejmarkup)
+    bot.register_next_step_handler(msg, concol1img)
+
+
+def concol1img(message):
+    if message.text == "تایید آگهی":
+        bot.send_photo(chat_id=963475140, caption=captioncol1, photo=imgcol1)
+        bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
+                         reply_markup=markup2)
+    elif message.text == "لغو آگهی":
+        bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
+
+
+@bot.message_handler(func=lambda m: True)
+def getcityrent(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "سایر":
+        othercityrent(message)
+    else:
+        global cityrent
+        cityrent = message.text
+        bot.send_message(message.chat.id, text=f"شهر : {cityrent}")
+        msg = bot.send_message(message.chat.id, text="محدوده مورد نظر را وارد نمایید :", reply_markup=main)
+        bot.register_next_step_handler(msg, getmahdooderent)
+
+
+@bot.message_handler(func=lambda m: True)
+def getmahdooderent(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global mahdoode
+        mahdoode = message.text
+        msg = bot.send_message(message.chat.id, text="""
+
+    تاریخ شروع مورد نظرتان را به میلادی وارد نمایید : 
+
+فرمت : dd/mm/yyyy مثال : 05/02/2024
+        """)
+        bot.register_next_step_handler(msg, getstartdate)
+
+
+def getstartdate(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global startdate
+        startdate = message.text
+        msg = bot.send_message(message.chat.id, text="""
+    تاریخ پایان مورد نظرتان را به میلادی وارد نمایید : 
+
+فرمت : dd/mm/yyyy مثال : 05/02/2024
+
+پی نوشت : یا میتوانید با ارسال کلمه "توافقی" تاریخ پایان را توافقی ثبت کنید
+
+    """, reply_markup=main2)
+        bot.register_next_step_handler(msg, enddate)
+
+
+def enddate(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global enddatee
+        enddatee = message.text
+        msg = bot.send_message(message.chat.id, text="وضعیت قرارداد را مشخص نمایید :", reply_markup=markupgharardad)
+        bot.register_next_step_handler(msg, gharardadrent)
+
+
+def gharardadrent(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global vaziat
+        vaziat = message.text
+        bot.send_message(message.chat.id, text=f"وضعیت قرارداد بصورت : {vaziat}")
+        msg = bot.send_message(message.chat.id, text="""
+    مایلید قیمت را به چه صورت اعلام کنید؟
+    """, reply_markup=markupprice)
+        bot.register_next_step_handler(msg, europrice)
+
+
+def europrice(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global eprice
+        eprice = message.text
+        msg = bot.send_message(message.chat.id, text=f"""
+         بصورت : {eprice}
+
+         حاضرید چند روبل پرداخت کنید؟
+         پی نوشت : فقط عدد وارد کنید یا با ارسال کلمه "توافقی" اطلاعات را ثبت کنید
+""", reply_markup=marktavafogh)
+        bot.register_next_step_handler(msg, gheymat)
+
+
+def gheymat(message):
+    global gheymateu
+    gheymateu = message.text
+    if message.text == "توافقی":
+        bot.send_message(message.chat.id, text=f"""
+        قیمت بصورت : {gheymateu}
+        """)
+        msg = bot.send_message(message.chat.id, text="توضیحات آگهی خود را وارد کنید:", reply_markup=tozihmark)
+    elif message.text == "لغو ❌":
+        cncltct(message)
+    else:
+        bot.send_message(message.chat.id, text=f"""
+        قیمت بصورت : {eprice}
+        """)
+        msg = bot.send_message(message.chat.id, text="توضیحات آگهی خود را وارد کنید:", reply_markup=tozihmark)
+    bot.register_next_step_handler(msg, toozihat)
+
+
+def toozihat(message):
+    global tozih
+    UID = message.from_user.username
+    tozih = message.text
+    text = f"""
+🌀✅ {daste} ✅🌀
+
+📍 مربوط به شهر:{cityrent} 
+
+🔎 محدوده:
+{mahdoode} 
+
+🗓 تاریخ شروع:
+{startdate}     
+
+🗓  تاریخ پایان :
+{enddatee}
+
+📑 نوع قرارداد:{vaziat} 
+
+💰 قیمت به روبل:{eprice} {gheymateu} 
+
+👤 تماس با آگهی دهنده:
+@{UID}
+
+توضیحات آگهی :{tozih}
+
+📎 @Rusbazar_bot  
+📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus
+
+    """
+    bot.send_message(message.chat.id, text=text, reply_markup=accorejmarkup)
+    msg = bot.send_message(message.chat.id, text="آیا آگهی خود را تایید میکنید؟", reply_markup=accorejmarkup)
+    bot.register_next_step_handler(msg, final)
+
+
+def final(message):
+    global finalask
+    finalask = message.text
+    UID = message.from_user.username
+    text = f"""
+🌀✅ {daste} ✅🌀
+
+📍 مربوط به شهر:{cityrent} 
+
+🔎 محدوده:
+{mahdoode} 
+
+🗓 تاریخ شروع:
+{startdate}     
+
+🗓  تاریخ پایان :
+{enddatee}
+
+📑 نوع قرارداد:{vaziat} 
+
+💰 قیمت به روبل: {eprice} {gheymateu} 
+
+👤 تماس با آگهی دهنده:
+@{UID}
+
+    توضیحات آگهی :    {tozih}
+
+📎 @Rusbazar_bot  
+📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus
+
+        """
+
+    if message.text == "تایید آگهی":
+        bot.send_message(chat_id=963475140, text=text)
+        bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
+                         reply_markup=markup2)
+    elif message.text == "لغو آگهی":
+        bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
 
