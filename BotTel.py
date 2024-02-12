@@ -300,5 +300,28 @@ def getdaste(message):
 
 
 
+def checkmember(user, channel):
+    for i in channel:
+        is_member = bot.get_chat_member(chat_id=i, user_id=user)
+        if is_member.status in ['kicked', 'left']:
+            return False
+    return True
+
+
+
+@bot.callback_query_handler(func=lambda call: call.data == "join")
+def joinm(call):
+    global is_member
+    is_member = checkmember(user=call.from_user.id, channel=channel)
+    if is_member is False:
+        bot.send_message(chat_id=call.message.chat.id, text="برای استفاده از ربات لطفا عضو کانال ها و گروه های ما شوید")
+    else:
+        bot.send_message(chat_id=call.message.chat.id, text="""
+        عضویت شما در کانال با موفقیت تایید شد ✅
+
+        از حالا شما میتوانید از خدمات ربات استفاده کنید.
+        """, reply_markup=markup2)
+
+
 
 
