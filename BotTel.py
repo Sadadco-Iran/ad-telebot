@@ -684,3 +684,217 @@ def final(message):
     elif message.text == "لغو آگهی":
         bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
 
+
+def getcitycol3(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    elif message.text == "سایر":
+        othercitycol3(message)
+    else:
+        global citycol3
+        citycol3 = message.text
+        bot.send_message(message.chat.id, text=f"📍 شهر :{citycol3}")
+        msg = bot.send_message(message.chat.id, text=f"""
+      قیمت مورد نظر خود را برای , {daste}, وارد کنید
+
+(فقط عدد وارد کنید مانند : 8 یا 8.50)
+یا میتوانید توافقی ثبت کنید. 
+
+    """, reply_markup=main2)
+        bot.register_next_step_handler(msg, getpricecol3)
+
+
+def othercitycol3(message):
+    msg = bot.send_message(message.chat.id, text="نام شهر خود را بنویسید و ارسال نمایید:", reply_markup=main)
+    bot.register_next_step_handler(msg, othercitycol3two)
+
+
+def othercitycol3two(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global citycol3
+        citycol3 = message.text
+        bot.send_message(message.chat.id, text=f"📍 شهر :{citycol3}")
+        msg = bot.send_message(message.chat.id, text=f"""
+      قیمت مورد نظر خود را برای , {daste}, وارد کنید
+
+(فقط عدد وارد کنید مانند : 8 یا 8.50)
+یا میتوانید توافقی ثبت کنید. 
+
+    """, reply_markup=main2)
+        bot.register_next_step_handler(msg, getpricecol3)
+
+
+def getpricecol3(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global pricecol3
+        pricecol3 = message.text
+        if message.text == "توافقی":
+            bot.send_message(message.chat.id, text=f"💶 قیمت :{pricecol3}")
+            msg = bot.send_message(message.chat.id, text="توضیحات مربوط به اگهی خود را ارسال نمایید :",
+                                   reply_markup=tozihmark)
+        elif message.text == "لغو ❌":
+            cncltct(message)
+        else:
+            bot.send_message(message.chat.id, text=f"💶 قیمت :{pricecol3}")
+            msg = bot.send_message(message.chat.id, text="توضیحات مربوط به اگهی خود را ارسال نمایید :",
+                                   reply_markup=tozihmark)
+        bot.register_next_step_handler(msg, imgcol3)
+
+
+def imgcol3(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global tozih
+        tozih = message.text
+        msg = bot.send_message(message.chat.id, text="یک عکس مربوط به آگهی خود ارسال کنید:", reply_markup=axmark)
+        bot.register_next_step_handler(msg, img2)
+
+
+@bot.message_handler(content_types=['photo'])
+def img2(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "بدون عکس":
+        toozihatcol3two(message)
+    else:
+        UID = message.from_user.username
+        global photocol3
+        photocol3 = message.photo[-1].file_id
+        global captioncol3
+        captioncol3 = f"""
+
+    🌀✅ {daste} ✅🌀
+
+📍 مربوط به شهر:{citycol3} 
+
+💰 قیمت به روبل: {pricecol3} 🙌
+
+📋 توضیحات:
+{tozih} 
+
+
+👤 تماس با آگهی دهنده:
+@{UID}
+
+
+📎 @Rusbazar_bot  
+
+📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus
+
+
+
+
+    """
+        bot.send_photo(message.chat.id, caption=captioncol3, photo=photocol3)
+        msg = bot.send_message(message.chat.id, text="آیا آگهی خود را تایید میکنید؟", reply_markup=accorejmarkup)
+        bot.register_next_step_handler(msg, conimgcol3)
+
+
+def conimgcol3(message):
+    if message.text == "تایید آگهی":
+        bot.send_photo(chat_id=963475140, caption=captioncol3, photo=photocol3, reply_markup=cnandcon)
+        bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
+                         reply_markup=markup2)
+
+    elif message.text == "لغو آگهی":
+        bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
+
+
+inlinecon = InlineKeyboardButton(text="تایید", callback_data="تایید")
+inlinecn = InlineKeyboardButton(text="لغو", callback_data="لغو")
+cnandcon = InlineKeyboardMarkup(row_width=2)
+cnandcon.add(inlinecon, inlinecn)
+
+
+def toozihatcol3two(message):
+    msg = bot.send_message(message.chat.id, text="لطفا مجددا توضیحات آگهی را وارد کنید.", reply_markup=tozihmark)
+    bot.register_next_step_handler(msg, toozihatcol3)
+
+
+def toozihatcol3(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global tozihcol3
+        UID = message.from_user.username
+        tozihcol3 = message.text
+        bot.send_message(message.chat.id, text="""
+     در حال ساخت آگهی شما . . .🪧📝
+
+لطفا کمی صبور باشید🙏🏻   
+
+
+    """)
+        bot.send_chat_action(chat_id=message.chat.id, action="typing")
+        time.sleep(1)
+        bot.send_message(message.chat.id, text=f"""
+
+    🌀✅ {daste} ✅🌀
+
+📍 مربوط به شهر:{citycol3} 
+
+💰 قیمت به روبل: {pricecol3} 🙌
+
+📋 توضیحات:
+{tozihcol3} 
+
+
+👤 تماس با آگهی دهنده:
+@{UID}
+
+
+📎 @Rusbazar_bot  
+
+📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus
+
+
+
+
+    """, reply_markup=accorejmarkup)
+        msg = bot.send_message(message.chat.id, text="آیا آگهی خود را تایید میکنید؟", reply_markup=accorejmarkup)
+        bot.register_next_step_handler(msg, finalcol3)
+
+
+def finalcol3(message):
+    global finalaskcol3
+    finalaskcol3 = message.text
+    UID = message.from_user.username
+    text = f"""
+        🌀✅ {daste} ✅🌀
+
+📍 مربوط به شهر:{citycol3} 
+
+💰 قیمت به روبل: {pricecol3} 🙌
+
+📋 توضیحات:
+{tozihcol3} 
+
+
+👤 تماس با آگهی دهنده:
+@{UID}
+
+
+📎 @Rusbazar_bot  
+📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus
+    """
+    if message.text == "تایید آگهی":
+        bot.send_message(chat_id=963475140, text=text)
+        bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
+                         reply_markup=markup2)
+    elif message.text == "لغو آگهی":
+        bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
