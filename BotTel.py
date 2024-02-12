@@ -247,6 +247,58 @@ def agahirig(message):
     bot.register_next_step_handler(msgdaste , getdaste )
 
 
+@bot.message_handler(func=lambda m: True)
+def getdaste(message):
+    global daste
+    daste = message.text
+    if message.text == "اجاره تخت" or message.text == "اجاره اتاق" or message.text == "اجاره خانه":
+        bot.delete_message(chat_id=message.chat.id, message_id=msgdaste.message_id)
+        bot.send_message(message.chat.id, text=f"📦 دسته بندی : {daste}")
+        msg = bot.send_message(message.chat.id,
+                               text="لطفا یک عکس مربوط به آگهی خود ارسال کنید (مکانی که میخواهید اجاره دهید) :",
+                               reply_markup=axmark)
+        bot.register_next_step_handler(msg, getimgcol1)
+
+    elif message.text == "متقاضی تخت" or message.text == "متقاضی اتاق" or message.text == "متقاضی خانه":
+        bot.delete_message(chat_id=message.chat.id, message_id=msgdaste.message_id)
+        bot.send_message(message.chat.id, text=f"📦 دسته بندی : {daste}")
+        msg = bot.send_message(message.chat.id, text="لطفا شهر خود را انتخاب کنید:", reply_markup=markupcity)
+        bot.register_next_step_handler(msg, getcityrent)
+
+    elif message.text == "خرید کالا" or message.text == "فروش کالا" or message.text == "نیازمندی ها":
+        bot.delete_message(chat_id=message.chat.id, message_id=msgdaste.message_id)
+        bot.send_message(chat_id=message.chat.id, text=f"📦 دسته بندی : {daste}")
+        msg4 = bot.send_message(message.chat.id, text="لطفا شهر خود را انتخاب کنید:", reply_markup=markupcity)
+        bot.register_next_step_handler(msg4, getcitycol3)
+
+    elif message.text == "فروش بار" or message.text == "خرید بار":
+        bot.delete_message(chat_id=message.chat.id, message_id=msgdaste.message_id)
+        bot.send_message(chat_id=message.chat.id, text=f"📦 دسته بندی : {daste}")
+        msgcountry = bot.send_message(message.chat.id, text="کشور را از مبدا به مقصد انتخاب کنید:",
+                                      reply_markup=country)
+        bot.register_next_step_handler(msgcountry, getcountrystuffittoir)
+
+    elif message.text == "خرید روبل" or message.text == "فروش روبل":
+        bot.delete_message(chat_id=message.chat.id, message_id=msgdaste.message_id)
+        bot.send_message(chat_id=message.chat.id, text=f"📦 دسته بندی : {daste}")
+        msgbuyeuro = bot.send_message(message.chat.id, text="""
+        چند روبل برای معامله دارید؟
+
+        فقط عدد وارد کنید.
+
+        مثال : 615
+        """)
+        bot.register_next_step_handler(msgbuyeuro, euro1)
+    elif message.text == "خرید ارز دیجیتال" or message.text == "فروش ارز دیجیتال":
+        bot.delete_message(chat_id=message.chat.id, message_id=msgdaste.message_id)
+        bot.send_message(chat_id=message.chat.id, text=f"📦 دسته بندی : {daste}")
+        msgbuybtc = bot.send_message(message.chat.id, text="یک ارز را برای معامله انتخاب کنید:", reply_markup=btcm)
+        bot.register_next_step_handler(msgbuybtc, witchbtc)
+
+    elif message.text == "لغو ❌":
+        cncltct(message)
+
+
 
 
 
