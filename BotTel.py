@@ -240,6 +240,12 @@ def start(m):
 
 
 
+@bot.message_handler(func=lambda m:m.text == "ثبت آگهی 📮")
+def agahirig(message):
+    global msgdaste
+    msgdaste=bot.send_message(message.chat.id , reply_markup=markupdaste , text="لطفا یکی از دسته های زیر را انتخاب کنید")
+    bot.register_next_step_handler(msgdaste , getdaste )
+
 
 
 
