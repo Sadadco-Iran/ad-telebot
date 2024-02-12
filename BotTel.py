@@ -898,3 +898,361 @@ def finalcol3(message):
                          reply_markup=markup2)
     elif message.text == "لغو آگهی":
         bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
+
+
+def getcountrystuffittoir(message):
+    msg1 = "ایران به روسیه"
+    msg2 = "روسیه به ایران"
+    if message.text == msg1:
+        irit(message)
+    elif message.text == msg2:
+        itir(message)
+    elif message.text == "لغو ❌":
+        cncltct(message)
+
+
+def irit(message):
+    global iritmom
+    iritmom = message.text
+    bot.send_message(message.chat.id, text=f"🚌 مبدا و مقصد : {iritmom}")
+    msg = bot.send_message(message.chat.id, text="شهر مبدا را انتخاب نمایید :", reply_markup=irancitymarkup)
+    bot.register_next_step_handler(msg, irit2)
+
+
+def irit2(message):
+    global iritmabda
+    iritmabda = message.text
+    bot.send_message(message.chat.id, text=f"📍 شهر مبدا: {iritmabda} ")
+    msg = bot.send_message(message.chat.id, text="شهر مقصد را انتخاب نمایید:", reply_markup=markupcity)
+    bot.register_next_step_handler(msg, irit3)
+
+
+def irit3(message):
+    global iritmaghsad
+    iritmaghsad = message.text
+    bot.send_message(message.chat.id, text=f"📍 شهر مقصد: {iritmaghsad} ")
+    msg = bot.send_message(message.chat.id, text="""
+    تاریخ پرواز خود را به میلادی وارد نمایید : 
+
+فرمت : dd/mm/yyyy مثال : 06/02/2024
+
+    """, reply_markup=main)
+    bot.register_next_step_handler(msg, irit4)
+
+
+def irit4(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global airdateirit
+        airdateirit = message.text
+        msg = bot.send_message(message.chat.id, text="""
+    قیمت هر کیلوگرم را به روبل وارد نمایید : 
+
+(فقط عدد وارد کنید مانند : 10 یا 10.50)
+یا با ارسال کلمه "توافقی" اطلاعات را ثبت کنید
+    """, reply_markup=main2)
+        bot.register_next_step_handler(msg, irit5)
+
+
+def irit5(message):
+    global pricekgirit
+    pricekgirit = message.text
+    bot.send_message(message.chat.id, text=f"قیمت : {pricekgirit}")
+    msg = bot.send_message(message.chat.id, text="""
+    چند کیلوگرم بار میخواهید معامله کنید ؟
+
+(فقط عدد وارد کنید مانند : 10 یا 10.50)
+
+    """)
+    bot.register_next_step_handler(msg, irit6)
+
+
+def irit6(message):
+    global kgirit
+    kgirit = message.text
+    msg = bot.send_message(message.chat.id, text="""
+    توضیحات مربوط به اگهی خود را ارسال نمایید :
+    """, reply_markup=tozihmark)
+    bot.register_next_step_handler(msg, irit7img)
+
+
+def irit7img(message):
+    global tozih
+    tozih = message.text
+    msg = bot.send_message(message.chat.id, text="یک عکس مربوط به آگهی خود ارسال کنید:", reply_markup=axmark)
+    bot.register_next_step_handler(msg, irit7img2)
+
+
+@bot.message_handler(content_types=['photo'])
+def irit7img2(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "بدون عکس":
+        irit7noimg(message)
+    else:
+        UID = message.from_user.username
+        global photocol4
+        photocol4 = message.photo[-1].file_id
+        global captioncol4
+        captioncol4 = f"""
+        🌀✅ {daste} ✅🌀
+
+🌎 کشور مبدا و مقصد:{iritmom} 
+
+🗓 تاریخ پرواز: {airdateirit}
+
+📍 شهر مبدا:{iritmabda}
+
+📍 شهر مقصد: {iritmaghsad}
+
+⛓ وزن بار به کیلو:{kgirit} 
+
+💰 قیمت هر کیلو به روبل:
+{pricekgirit} 
+
+توضیحات آگهی :
+{tozih}
+
+
+👤 تماس با آگهی دهنده
+@{UID}
+
+📎 @Rusbazar_bot  
+📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus
+        """
+        bot.send_photo(message.chat.id, caption=captioncol4, photo=photocol4)
+        msg = bot.send_message(message.chat.id, text="آیا آگهی خود را تایید میکنید؟", reply_markup=accorejmarkup)
+        bot.register_next_step_handler(msg, conimgcol4)
+
+
+def conimgcol4(message):
+    if message.text == "تایید آگهی":
+        bot.send_photo(chat_id=963475140, caption=captioncol4, photo=photocol4)
+        bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
+                         reply_markup=markup2)
+    elif message.text == "لغو آگهی":
+        bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
+
+
+def irit7noimg(message):
+    msg = bot.send_message(message.chat.id, text="لطفا توضیحات آگهی را مجددا ارسال نمایید:", reply_markup=tozihmark)
+    bot.register_next_step_handler(msg, irit7)
+
+
+def irit7(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global tozihirit
+        UID = message.from_user.username
+        tozihirit = message.text
+        bot.send_message(message.chat.id, text="""
+    در حال ساخت آگهی شما . . .🪧📝
+
+لطفا کمی صبور باشید🙏🏻
+
+    """)
+        time.sleep(1)
+        bot.send_message(message.chat.id, text=f"""
+    🌀✅ {daste} ✅🌀
+
+🌎 کشور مبدا و مقصد:{iritmom} 
+
+🗓 تاریخ پرواز: {airdateirit}
+
+📍 شهر مبدا:{iritmabda}
+
+📍 شهر مقصد: {iritmaghsad}
+
+⛓ وزن بار به کیلو:{kgirit} 
+
+💰 قیمت هر کیلو به روبل:
+{pricekgirit} 
+
+توضیحات آگهی :
+{tozihirit}
+
+👤 تماس با آگهی دهنده
+@{UID}
+
+📎 @Rusbazar_bot  
+📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus
+    """, )
+        msg = bot.send_message(message.chat.id, text="آیا آگهی خود را تایید میکنید؟", reply_markup=accorejmarkup)
+        bot.register_next_step_handler(msg, finalirit)
+
+
+def finalirit(message):
+    global conirit
+    conirit = message.text
+    UID = message.from_user.username
+    text = f"""
+    🌀✅ {daste} ✅🌀
+
+🌎 کشور مبدا و مقصد:{iritmom} 
+
+🗓 تاریخ پرواز: {airdateirit}
+
+📍 شهر مبدا:{iritmabda}
+
+📍 شهر مقصد: {iritmaghsad}
+
+⛓ وزن بار به کیلو:{kgirit} 
+
+💰 قیمت هر کیلو به روبل:
+{pricekgirit} 
+
+توضیحات آگهی :
+{tozihirit}
+
+👤 تماس با آگهی دهنده
+@{UID}
+
+📎 @Rusbazar_bot  
+📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus
+    """
+    if message.text == "تایید آگهی":
+        bot.send_message(chat_id=963475140, text=text)
+        bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
+                         reply_markup=markup2)
+    elif message.text == "لغو آگهی":
+        bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
+
+
+def itir(message):
+    global itirmom
+    itirmom = message.text
+    bot.send_message(message.chat.id, text=f"🚌 مبدا و مقصد : {itirmom}")
+    msg = bot.send_message(message.chat.id, text="شهر مبدا را انتخاب نمایید :", reply_markup=markupcity)
+    bot.register_next_step_handler(msg, itir2)
+
+
+def itir2(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global itirmabda
+        itirmabda = message.text
+        bot.send_message(message.chat.id, text=f"📍 شهر مبدا: {itirmabda} ")
+        msg = bot.send_message(message.chat.id, text="شهر مقصد را انتخاب نمایید:", reply_markup=irancitymarkup)
+        bot.register_next_step_handler(msg, itir3)
+
+
+def itir3(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global itirmaghsad
+        itirmaghsad = message.text
+        bot.send_message(message.chat.id, text=f"📍 شهر مقصد: {itirmaghsad} ")
+        msg = bot.send_message(message.chat.id, text="""
+    تاریخ پرواز خود را به میلادی وارد نمایید : 
+
+فرمت : dd/mm/yyyy مثال : 06/02/2024
+
+    """, reply_markup=main)
+        bot.register_next_step_handler(msg, itir4)
+
+
+def itir4(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global airdateitir
+        airdateitir = message.text
+        msg = bot.send_message(message.chat.id, text="""
+    قیمت هر کیلوگرم را به روبل وارد نمایید : 
+
+(فقط عدد وارد کنید مانند : 10 یا 10.50)
+
+یا میتوانید با ارسال کلمه "توافقی" اطلاعات را ثبت کنید.
+
+    """, reply_markup=marktavafogh)
+        bot.register_next_step_handler(msg, itir5)
+
+
+def itir5(message):
+    global pricekgitir
+    pricekgitir = message.text
+    bot.send_message(message.chat.id, text=f"قیمت : {pricekgitir}")
+    msg = bot.send_message(message.chat.id, text="""
+    چند کیلوگرم بار میخواهید معامله کنید؟ ؟
+
+(فقط عدد وارد کنید مانند : 10 یا 10.50)
+
+    """, reply_markup=main)
+    bot.register_next_step_handler(msg, itir6)
+
+
+def itir6(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "شروع مجدد":
+        start(message)
+    else:
+        global kgitir
+        kgitir = message.text
+        msg = bot.send_message(message.chat.id, text="""
+    توضیحات مربوط به اگهی خود را ارسال نمایید :
+    """, reply_markup=tozihmark)
+        bot.register_next_step_handler(msg, itir7img)
+
+
+def itir7img(message):
+    global tozih
+    tozih = message.text
+    msg = bot.send_message(message.chat.id, text="یک عکس مربوط به آگهی خود ارسال کنید:", reply_markup=axmark)
+    bot.register_next_step_handler(msg, itir7img2)
+
+
+@bot.message_handler(content_types=['photo'])
+def itir7img2(message):
+    if message.text == "لغو ❌":
+        cncltct(message)
+    elif message.text == "بدون عکس":
+        itir7noimg(message)
+    else:
+        UID = message.from_user.username
+        global photocol4
+        photocol4 = message.photo[-1].file_id
+        global captioncol4
+        captioncol4 = f"""
+🌀✅ {daste} ✅🌀
+
+🌎 کشور مبدا و مقصد:{itirmom} 
+
+🗓 تاریخ پرواز: {airdateitir}
+
+📍 شهر مبدا:{itirmabda}
+
+📍 شهر مقصد: {itirmaghsad}
+
+⛓ وزن بار به کیلو:{kgitir} 
+
+💰 قیمت هر کیلو به روبل:
+{pricekgitir} 
+
+توضیحات آگهی :
+{tozih}
+
+
+👤 تماس با آگهی دهنده
+@{UID}
+
+📎 @Rusbazar_bot  
+📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus
+        """
+        bot.send_photo(message.chat.id, caption=captioncol4, photo=photocol4)
+        msg = bot.send_message(message.chat.id, text="آیا آگهی خود را تایید میکنید؟", reply_markup=accorejmarkup)
+        bot.register_next_step_handler(msg, conimgcol4two)
