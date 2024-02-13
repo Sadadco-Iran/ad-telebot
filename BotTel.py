@@ -4,11 +4,14 @@ from telebot.types import InlineKeyboardButton , InlineKeyboardMarkup
 from telebot.types import KeyboardButton , ReplyKeyboardMarkup
 from config import channel, TOKEN
 import time
+from telebot.handler_backends import StatesGroup , State
 
 
 mychatid = 963475140
 bot = TeleBot(token=TOKEN)
 
+class finalconfirm(StatesGroup):
+    fc = State()
 
 
 """
@@ -36,6 +39,7 @@ inbutton3 = InlineKeyboardButton(text="🔹چنل آگهی ما🔹", url="https
 inbutton4 = InlineKeyboardButton(text="🔹بررسی عضویت🔹", callback_data="join")
 markup1 = InlineKeyboardMarkup(row_width=1)
 markup1.add(inbutton1, inbutton2 , inbutton3 , inbutton4)
+
 markchnnl = InlineKeyboardMarkup(row_width=1)
 markchnnl.add(inbutton1 , inbutton2 , inbutton3)
 
@@ -220,6 +224,11 @@ withoutax = KeyboardButton(text="بدون عکس")
 axmark = ReplyKeyboardMarkup(row_width=1)
 axmark.add(withoutax , buttoncn)
 
+
+acc = InlineKeyboardButton(text="تایید" , callback_data="acc")
+rej = InlineKeyboardButton(text="لغو" , callback_data="rej")
+finalmark = InlineKeyboardMarkup(row_width=2)
+finalmark.add(acc , rej)
 @bot.message_handler(commands=['start'])
 def start(m):
     bot.send_message(m.chat.id, text="""
@@ -489,13 +498,19 @@ def toozihatimg(message):
 
 def concol1img(message):
     if message.text == "تایید آگهی":
-        bot.send_photo(chat_id=963475140, caption=captioncol1, photo=imgcol1)
-        bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
-                         reply_markup=markup2)
+        msg = bot.send_photo(chat_id=963475140, caption=captioncol1, photo=imgcol1)
+        bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",reply_markup=markup2)
+        bot.register_next_step_handler(msg , admincon)
+
     elif message.text == "لغو آگهی":
         bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
-
-
+@bot.callback_query_handler(func=lambda call:True)
+def admincon(call):
+    if call.data == "تایید":
+        channelagahi = '@newstateViru3'
+        bot.forward_message(channelagahi , call.message.chat.id , call.message.message.id)
+    elif call.data == "لغو":
+        bot.send_message(call.message.chat.id , text="لغو شد!!")
 @bot.message_handler(func=lambda m: True)
 def getcityrent(message):
     if message.text == "لغو ❌":
