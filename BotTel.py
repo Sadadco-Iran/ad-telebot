@@ -7,7 +7,7 @@ import time
 from telebot.handler_backends import StatesGroup , State
 
 
-mychatid = 963475140
+mychatid = 6636146690
 bot = TeleBot(token=TOKEN)
 
 class finalconfirm(StatesGroup):
