@@ -718,11 +718,21 @@ def final(message):
         """
 
     if message.text == "تایید آگهی":
-        bot.send_message(chat_id=963475140, text=text)
-        bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
-                         reply_markup=markup2)
+        bot.send_message(chat_id=963475140, text=text , reply_markup=finalmark)
+        bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",reply_markup=markup2)
     elif message.text == "لغو آگهی":
         bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
+
+
+@bot.message_handler(commands=['help'])
+def mmd(message):
+    ch = "@newstateViru3"
+    bot.send_message(chat_id=ch, text="هعلا")
+
+
+
+
+
 
 
 def getcitycol3(message):
@@ -1841,14 +1851,40 @@ def btcfinal(message):
 @bot.message_handler(func=lambda m: m.text == "قوانین 📌")
 def rules(message):
     text = """
+✅ ثبت آگهی در کانال @niazmndiha_2024_rus فقط توسط این ربات و پس از تایید ادمین صورت میگیرد.
+
+✅ نیازی به نوشتن ID در آگهی نمی باشد.
+
+✳️درصورت بروز مشکل بر روی گزینه « پشتیبانی  » در منو بزنید و پیغام خود را بنویسید. پاسخ خود را در ربات دریافت خواهید نمود.
+
+✅امکان قرار دادن لینک و عکس در آگهی بدون محدودیت.
+
+✅برای هر گونه معامله دقت کامل بفرمایید در صورت مشکوک بودن به ادمین ها اطلاع رسانی کنید یا اکر در خرید و معامله احتیاج به کمکی بود به پشتیبانی یا ادمین ها پیام بدید !
+
+
+✅امکان مشاهده و مدیریت آگهی های خود.
+
+✅امکان انقضای آگهی بطور مستقیم از داخل ربات.
+
+✳️ به منظور جلوگیری از پرسش کاربران در pv، برای اعلام انقضای آگهی هایتان میتوانید بطور مستقیم از طریق ربات اقدام فرمایید. بدین منظور در منو به روی دکمه «آگهی های من » کلیک کنید.
+
+⚠️ صحت آگهی بر عهده آگهی دهنده است و russ bazzar. هیچ گونه مسئولیتی در قبال آگهی و آگهی دهنده قبول نمیکند. به خصوص در مورد آگهی های خرید و فروش ارز. لطفا با احتیاط اقدام کنید.
+
+⛔️ Disclaimer: ⛔️
+ Russ bazzar is a free channel for helping each other and we (admins and owners of channels) do not have any responsibility for any illegal or false advertisements, all the responsibilities and the rights of all the contents and advertisements belong to the advertisers. So Please be respectful of russian and international law and be aware of any consequences regarding your advertisement.
+We appreciate your consideration. By continuing, you accept the “terms and conditions” of using the channel and bot services.
+
 کانال های ما :
-@rednews2022
-@havashi_russ_2022 
-@niazmndiha_2024_rus
+🔰@havashi_russ_2022🔰
+🔰@rednews2022🔰
+🔰@russie_tuday2024🔰
+🔰@niazmndiha_2024_rus🔰
 
-------------------------------------------
+---------------------------------
 
-متن قوانین تنظیم نشده.
+https://www.instagram.com/p/CyuL-80sN9a/?igsh=NXcz
+
+اینستاگرام
     """
     bot.send_message(message.chat.id, text=text)
 
