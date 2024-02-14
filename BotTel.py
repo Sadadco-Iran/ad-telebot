@@ -718,11 +718,17 @@ def final(message):
         """
 
     if message.text == "تایید آگهی":
-        bot.send_message(chat_id=963475140, text=text , reply_markup=finalmark)
+        msg = bot.send_message(chat_id=963475140, text=text , reply_markup=finalmark)
+        bot.register_next_step_handler(msg , conl)
         bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",reply_markup=markup2)
     elif message.text == "لغو آگهی":
         bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
 
+
+def conl(call):
+    if call.data == "تایید":
+        chatid="@newstateViru3"
+        bot.send_message(chat_id=chatid , text="dvs")
 
 @bot.message_handler(commands=['help'])
 def mmd(message):
