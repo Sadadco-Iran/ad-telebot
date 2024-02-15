@@ -7,7 +7,7 @@ import time
 from telebot.handler_backends import StatesGroup , State
 
 
-mychatid = 5686767404
+mychatid = 6079424934
 bot = TeleBot(token=TOKEN)
 
 
@@ -278,6 +278,7 @@ finalmarkcol4img2.add(acccol4img2 , rejcol4img2)
 acccol5 = InlineKeyboardButton(text="تایید" , callback_data="acc8")
 rejcol5= InlineKeyboardButton(text="لغو" , callback_data="rej8")
 finalmarkcol5= InlineKeyboardMarkup(row_width=2)
+finalmarkcol5.add(acccol5 , rejcol5)
 
 # col6
 acccol6 = InlineKeyboardButton(text="تایید" , callback_data="acc9")
@@ -308,6 +309,8 @@ def defs(message):
 def callback(call):
      if call.data == "acc2":
          conadmincol3img(call)
+     elif call.data == "acc":
+         callback_query(call)
      elif call.data == "acc3":
          conadmincol3noimg(call)
      elif call.data == "acc4":
@@ -610,14 +613,14 @@ def toozihatimg(message):
 
 def concol1img(message):
     if message.text == "تایید آگهی":
-        bot.send_photo(chat_id=5686767404, caption=captioncol1, photo=imgcol1 , reply_markup=finalmarkcol1img)
+        bot.send_photo(chat_id=6079424934, caption=captioncol1, photo=imgcol1 , reply_markup=finalmarkcol1img)
         bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",reply_markup=markup2)
     elif message.text == "لغو آگهی":
         bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
 
 @bot.callback_query_handler(func=lambda call:call.data == "acc")
 def callback_query(call):
-    destination_chat_id = -1002120628055
+    destination_chat_id = -1001948066605
     bot.send_message(chat_id=destination_chat_id, text=f"""
 🌀✅ {daste} ✅🌀
 
@@ -649,7 +652,7 @@ def callback_query(call):
 
 @bot.callback_query_handler(func=lambda call:True)
 def conadmincol1img(call):
-    destination_chat_id = -1002120628055
+    destination_chat_id = -1001948066605
     if call.data == "acc1":
         bot.send_photo(chat_id=destination_chat_id, caption=captioncol1, photo=imgcol1)
 
@@ -657,7 +660,7 @@ def conadmincol1img(call):
 
 @bot.callback_query_handler(func=lambda call:call.data == "acc2")
 def conadmincol3img(call):
-    destination_chat_id = -1002120628055
+    destination_chat_id = -1001948066605
     bot.send_photo(chat_id=destination_chat_id, caption=captioncol3, photo=photocol3)
 
 
@@ -874,7 +877,7 @@ def final(message):
         """
 
     if message.text == "تایید آگهی":
-        bot.send_message(chat_id=5686767404, text=text , reply_markup=finalmark)
+        bot.send_message(chat_id=6079424934, text=text , reply_markup=finalmark)
         bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",reply_markup=markup2)
     elif message.text == "لغو آگهی":
         bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
@@ -1009,7 +1012,7 @@ def img2(message):
 
 def conimgcol3(message):
     if message.text == "تایید آگهی":
-        bot.send_photo(chat_id=5686767404, caption=captioncol3, photo=photocol3, reply_markup=finalmarkcol3img)
+        bot.send_photo(chat_id=6079424934, caption=captioncol3, photo=photocol3, reply_markup=finalmarkcol3img)
         bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",reply_markup=markup2)
     elif message.text == "لغو آگهی":
         bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
@@ -1088,7 +1091,7 @@ def finalcol3(message):
 📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus
     """
     if message.text == "تایید آگهی":
-        bot.send_message(chat_id=5686767404, text=text , reply_markup=finalmarkcol3noimg)
+        bot.send_message(chat_id=6079424934, text=text , reply_markup=finalmarkcol3noimg)
         bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
                          reply_markup=markup2)
     elif message.text == "لغو آگهی":
@@ -1097,7 +1100,7 @@ def finalcol3(message):
 @bot.callback_query_handler(func=lambda call:True)
 def conadmincol3noimg(call):
     if call.data == "acc3":
-        destination_chat_id = -1002120628055
+        destination_chat_id = -1001948066605
         text = f"""
         🌀✅ {daste} ✅🌀
 
@@ -1247,7 +1250,7 @@ def irit7img2(message):
 
 def conimgcol4(message):
     if message.text == "تایید آگهی":
-        bot.send_photo(chat_id=5686767404, caption=captioncol4, photo=photocol4 , reply_markup=finalmarkcol4img2)
+        bot.send_photo(chat_id=6079424934, caption=captioncol4, photo=photocol4 , reply_markup=finalmarkcol4img2)
         bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
                          reply_markup=markup2)
     elif message.text == "لغو آگهی":
@@ -1255,7 +1258,7 @@ def conimgcol4(message):
 
 @bot.callback_query_handler(func=lambda call:True)
 def conadmincol4img(call):
-    destination_chat_id = -1002120628055
+    destination_chat_id = -1001948066605
     if call.data == "acc5":
         bot.send_photo(chat_id=destination_chat_id, caption=captioncol4, photo=photocol4)
 
@@ -1338,7 +1341,7 @@ def finalirit(message):
 📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus
     """
     if message.text == "تایید آگهی":
-        bot.send_message(chat_id=5686767404, text=text ,reply_markup= finalmarkcol4noimg)
+        bot.send_message(chat_id=6079424934, text=text ,reply_markup= finalmarkcol4noimg)
         bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
                          reply_markup=markup2)
     elif message.text == "لغو آگهی":
@@ -1347,7 +1350,7 @@ def finalirit(message):
 @bot.callback_query_handler(func=lambda call:True)
 def conadmincol4noimg(call):
     if call.data == "acc4":
-        destination_chat_id = -1002120628055
+        destination_chat_id = -1001948066605
         bot.send_message(destination_chat_id , text=f"""
     🌀✅ {daste} ✅🌀
 
@@ -1510,7 +1513,7 @@ def itir7img2(message):
 
 def conimgcol4two(message):
     if message.text == "تایید آگهی":
-        bot.send_photo(chat_id=5686767404 , caption=captioncol4 , photo=photocol4 , reply_markup=finalmarkcol4img2)
+        bot.send_photo(chat_id=6079424934 , caption=captioncol4 , photo=photocol4 , reply_markup=finalmarkcol4img2)
         bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",reply_markup=markup2)
     elif message.text == "لغو آگهی":
         bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
@@ -1518,7 +1521,7 @@ def conimgcol4two(message):
 
 @bot.callback_query_handler(func=lambda call:True)
 def conadmincol4img2(call):
-    destination_chat_id = -1002120628055
+    destination_chat_id = -1001948066605
     if call.data == "acc7":
         bot.send_photo(chat_id=destination_chat_id, caption=captioncol4, photo=photocol4)
 
@@ -1595,7 +1598,7 @@ def finalitir(message):
 📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus
     """
     if message.text == "تایید آگهی":
-        bot.send_message(chat_id=5686767404, text=text , reply_markup=finalmarkcol4noimg2)
+        bot.send_message(chat_id=6079424934, text=text , reply_markup=finalmarkcol4noimg2)
         bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",reply_markup=markup2)
     elif message.text == "لغو آگهی":
         bot.send_message(message.chat.id, text="آگهی شما لغو شد❌", reply_markup=markup2)
@@ -1604,7 +1607,7 @@ def finalitir(message):
 @bot.callback_query_handler(func=lambda call:True)
 def conadmincol4noimg2(call):
     if call.data == "acc6":
-        destination_chat_id = -1002120628055
+        destination_chat_id = -1001948066605
         bot.send_message(destination_chat_id , text=f"""
     🌀✅ {daste} ✅🌀
 
@@ -1802,7 +1805,7 @@ def other6(message):
     📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus        
                    """
     if message.text == "تایید آگهی":
-        bot.send_message(chat_id=5686767404, text=text , reply_markup=finalmarkcol5)
+        bot.send_message(chat_id=6079424934, text=text , reply_markup=finalmarkcol5)
         bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
                          reply_markup=markup2)
     elif message.text == "لغو آگهی":
@@ -1909,7 +1912,7 @@ def paym5(message):
            📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus        
                """
     if message.text == "تایید آگهی":
-        bot.send_message(chat_id=5686767404, text=text , reply_markup=finalmarkcol5)
+        bot.send_message(chat_id=6079424934, text=text , reply_markup=finalmarkcol5)
         bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
                          reply_markup=markup2)
     elif message.text == "لغو آگهی":
@@ -1917,7 +1920,7 @@ def paym5(message):
 
 @bot.callback_query_handler(func=lambda call:True)
 def col5(call):
-    destination_chat_id = -1002120628055
+    destination_chat_id = -1001948066605
     text = f"""
         🌀✅ {daste} ✅🌀
 
@@ -2097,7 +2100,7 @@ def btcfinal(message):
            📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus        
                """
     if message.text == "تایید آگهی":
-        bot.send_message(chat_id=5686767404, text=text , reply_markup=finalmarkcol6)
+        bot.send_message(chat_id=6079424934, text=text , reply_markup=finalmarkcol6)
         bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
                          reply_markup=markup2)
     elif message.text == "لغو آگهی":
@@ -2105,7 +2108,7 @@ def btcfinal(message):
 
 @bot.callback_query_handler(func=lambda call:True)
 def col6(call):
-    destination_chat_id = -1002120628055
+    destination_chat_id = -1001948066605
     text = f"""
 🌀✅ {daste} ✅🌀
 
@@ -2317,7 +2320,7 @@ def otherbtc6(message):
 📣 @rednews2022 @havashi_russ_2022 @niazmndiha_2024_rus        
     """
     if message.text == "تایید آگهی":
-        bot.send_message(chat_id=5686767404, text=text , reply_markup=finalmarkcol6)
+        bot.send_message(chat_id=6079424934, text=text , reply_markup=finalmarkcol6)
         bot.send_message(message.chat.id, text="آگهی شما ثبت شد و پس از تایید در کانال قرار داده میشود✅",
                          reply_markup=markup2)
     elif message.text == "لغو آگهی":
@@ -2346,7 +2349,7 @@ def confirm(message):
     if tct == "لغو ❌":
         cncltct(message)
     else:
-        bot.send_message(chat_id=5686767404, text=f"""
+        bot.send_message(chat_id=6079424934, text=f"""
     ارسالی از تیکت
 نام ارسال کننده :
 {UFN}
