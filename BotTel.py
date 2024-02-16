@@ -458,7 +458,6 @@ def gheymat1(message):
         msg = bot.send_message(message.chat.id, text="توضیحات آگهی خود را وارد کنید:", reply_markup=tozihmark)
     bot.register_next_step_handler(msg, toozihatimg)
 
-
 def toozihatimg(message):
     global tozih
     UID = message.from_user.username
@@ -2076,7 +2075,6 @@ def confirm(message):
         bot.send_message(chat_id=message.chat.id, text="تیکت شما ثبت شد.", reply_markup=markup2)
 
 
-
 def cncltct(message):
     bot.send_message(message.chat.id, text="به منوی اصلی بازگشتید.", reply_markup=markup2)
 
@@ -2107,4 +2105,8 @@ def start2(message):
 
             """, reply_markup=markup1)
 
-bot.polling()
+
+print("Bot Online")
+
+
+bot.polling(none_stop=True)
